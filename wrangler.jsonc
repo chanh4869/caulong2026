@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cau-long-cup-2026",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-09-01",
+
+  // Phục vụ toàn bộ thư mục public/ (trang HTML + CSS/JS) làm static assets.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+
+  // Một Durable Object "Tournament" duy nhất giữ toàn bộ trạng thái bảng đấu,
+  // chia sẻ real-time cho mọi người xem qua WebSocket.
+  "durable_objects": {
+    "bindings": [
+      { "name": "TOURNAMENT", "class_name": "Tournament" }
+    ]
+  },
+
+  // Bắt buộc khi dùng SQLite storage cho Durable Object.
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["Tournament"] }
+  ]
+}

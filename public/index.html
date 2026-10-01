@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cầu Lông Cup 2026</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F6F6F0; --surface:#FFFFFF; --surface-2:#EFEFE6; --fg:#1B2420; --muted:#6B7A70;
+  --line:#DEE1D6; --accent:#216B45; --live:#B9770E; --live-bg:#FBF0DC; --done-bg:#E4F1E8;
+  --danger:#A3432B; --focus:#216B45;
+  --font-display:'Teko','Arial Narrow',sans-serif; --font-body:'Work Sans',system-ui,sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12160F; --surface:#1A201A; --surface-2:#212820; --fg:#ECEEE6; --muted:#9FAEA2;
+    --line:#2B332A; --accent:#4FBB85; --live:#E3A93B; --live-bg:#2E2611; --done-bg:#163525;
+    --danger:#E08064; --focus:#4FBB85; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12160F; --surface:#1A201A; --surface-2:#212820; --fg:#ECEEE6; --muted:#9FAEA2;
+  --line:#2B332A; --accent:#4FBB85; --live:#E3A93B; --live-bg:#2E2611; --done-bg:#163525;
+  --danger:#E08064; --focus:#4FBB85; color-scheme: dark;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{background:var(--bg); color:var(--fg); font-family:var(--font-body); padding-inline:16px;}
+.page{max-width:960px; margin:0 auto; padding-block:28px 60px;}
+.top{display:flex; flex-direction:column; gap:6px; margin-bottom:28px;}
+.eyebrow{font-size:12px; font-weight:600; letter-spacing:.11em; color:var(--accent); text-transform:uppercase;}
+h1{font-family:var(--font-display); font-weight:600; font-size:clamp(34px,7vw,52px); line-height:1; margin:2px 0; text-wrap:balance;}
+.sub{margin:0; color:var(--muted); font-size:14.5px;}
+.rule{margin-top:10px; font-size:13px; color:var(--muted); border-left:3px solid var(--line); padding-left:10px; max-width:52ch;}
+.banner{margin-top:14px; padding:10px 14px; border-radius:10px; font-size:13.5px; background:var(--live-bg); color:var(--live); border:1px solid var(--line);}
+main{display:flex; flex-direction:column; gap:34px;}
+.round-title{font-family:var(--font-display); font-weight:600; font-size:26px; margin:0 0 12px; display:flex; align-items:baseline; gap:10px;}
+.round-meta{font-family:var(--font-body); font-size:12.5px; color:var(--muted); font-weight:500;}
+.grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:14px;}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px 16px; display:flex; flex-direction:column; gap:10px; min-width:0;}
+.card-head{display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;}
+.chip{font-size:11.5px; font-weight:600; letter-spacing:.03em; color:var(--muted); background:var(--surface-2); border-radius:999px; padding:3px 9px;}
+.pill{font-size:11.5px; font-weight:700; letter-spacing:.03em; border-radius:999px; padding:3px 10px; text-transform:uppercase;}
+.pill-pending{background:var(--surface-2); color:var(--muted);}
+.pill-live{background:var(--live-bg); color:var(--live);}
+.pill-done{background:var(--done-bg); color:var(--accent);}
+.team{display:grid; grid-template-columns:1fr auto; align-items:center; gap:10px; padding:7px 0; border-top:1px solid var(--line);}
+.team:first-of-type{border-top:none;}
+.team.winner .name-input{font-weight:700; color:var(--accent);}
+.name-wrap{display:flex; align-items:center; gap:7px; min-width:0;}
+.check{color:var(--accent); font-size:14px; flex:none;}
+.name-input{width:100%; min-width:0; border:none; border-bottom:1px dashed var(--line); background:transparent; color:var(--fg); font-family:var(--font-body); font-size:14.5px; font-weight:500; padding:4px 2px; border-radius:4px; cursor:text;}
+.name-input:hover:not([disabled]){background:var(--surface-2); border-bottom-color:var(--accent);}
+.name-input::placeholder{color:var(--muted); font-style:italic;}
+.name-input:focus-visible{outline:2px solid var(--focus); outline-offset:1px; border-bottom-color:transparent;}
+.name-input[disabled]{opacity:.7; border-bottom-color:transparent; cursor:default;}
+.edit-icon{font-size:11px; color:var(--muted); opacity:.5; flex:none;}
+.name-input[disabled] + .edit-icon{display:none;}
+.score-group{display:flex; align-items:center; gap:6px; flex:none;}
+.score-btn{width:26px; height:26px; border-radius:8px; border:1px solid var(--line); background:var(--surface-2); color:var(--fg); font-size:15px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+.score-btn:active{transform:translateY(1px);}
+.score-btn:disabled{opacity:.35; cursor:not-allowed;}
+.score-btn:focus-visible{outline:2px solid var(--focus); outline-offset:1px;}
+.score-num{font-family:var(--font-display); font-size:30px; font-weight:600; min-width:1.4ch; text-align:center; font-variant-numeric:tabular-nums;}
+.card-foot{display:flex; justify-content:flex-end;}
+.reset-btn{border:none; background:none; color:var(--danger); font-size:12px; font-weight:600; cursor:pointer; padding:4px 2px; letter-spacing:.02em;}
+.reset-btn:focus-visible{outline:2px solid var(--focus); outline-offset:1px;}
+.skeleton{opacity:.5;}
+.foot{margin-top:40px; font-size:12px; color:var(--muted); border-top:1px solid var(--line); padding-top:16px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div class="eyebrow">Giải đấu loại trực tiếp</div>
+    <h1>Cầu Lông Cup 2026</h1>
+    <p class="sub">8 đội · Đôi Nam Nữ · Hạt giống 1–2 tách nhánh, 6 đội còn lại bốc thăm</p>
+    <p class="rule">Luật tính điểm: ván đấu tới 21 điểm, thắng cách biệt tối thiểu 2 điểm, điểm trần 30 — hoà 29–29 thì điểm thứ 30 thắng tuyệt đối.</p>
+    <div class="banner" id="banner" hidden></div>
+  </header>
+
+  <main>
+    <section class="round">
+      <h2 class="round-title">Tứ kết <span class="round-meta">4 trận · 2 đợt trên 2 sân</span></h2>
+      <div class="grid" id="grid-qf"></div>
+    </section>
+    <section class="round">
+      <h2 class="round-title">Bán kết <span class="round-meta">2 trận</span></h2>
+      <div class="grid" id="grid-sf"></div>
+    </section>
+    <section class="round">
+      <h2 class="round-title">Chung kết</h2>
+      <div class="grid" id="grid-final"></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    Thắng mỗi tứ kết/bán kết tự động chuyển vào vị trí tương ứng ở vòng sau. Thêm <code>?view=1</code> vào cuối đường dẫn để mở bản chỉ xem (màn hình chiếu công khai, không có nút bấm).
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var MATCH_ORDER = ["qf1","qf2","qf3","qf4","sf1","sf2","final"];
+  var ROUND_OF = {qf1:"qf",qf2:"qf",qf3:"qf",qf4:"qf",sf1:"sf",sf2:"sf",final:"final"};
+  var GRID_FOR_ROUND = {qf:"grid-qf", sf:"grid-sf", final:"grid-final"};
+
+  var params = new URLSearchParams(location.search);
+  var editable = params.get("view") !== "1";
+
+  var cache = {};
+  var cardEls = {};
+  var ws = null;
+  var reconnectDelay = 1000;
+
+  function showBanner(text, isError){
+    var b = document.getElementById("banner");
+    b.textContent = text;
+    b.hidden = !text;
+    b.style.color = isError ? "var(--danger)" : "var(--live)";
+  }
+
+  function buildCard(id){
+    var card = document.createElement("div");
+    card.className = "card skeleton";
+
+    var head = document.createElement("div");
+    head.className = "card-head";
+    var chip = document.createElement("span");
+    chip.className = "chip";
+    var pill = document.createElement("span");
+    pill.className = "pill pill-pending";
+    pill.textContent = "Chưa đấu";
+    head.appendChild(chip);
+    head.appendChild(pill);
+    card.appendChild(head);
+
+    function buildTeamRow(side){
+      var row = document.createElement("div");
+      row.className = "team";
+      var nameWrap = document.createElement("div");
+      nameWrap.className = "name-wrap";
+      var check = document.createElement("span");
+      check.className = "check";
+      check.textContent = "✓";
+      check.hidden = true;
+      var input = document.createElement("input");
+      input.type = "text";
+      input.maxLength = 120;
+      input.className = "name-input";
+      input.placeholder = "Nhập tên đội";
+      input.id = id + "-team" + side;
+      var editIcon = document.createElement("span");
+      editIcon.className = "edit-icon";
+      editIcon.textContent = "✎";
+      editIcon.setAttribute("aria-hidden", "true");
+      nameWrap.appendChild(check);
+      nameWrap.appendChild(input);
+      nameWrap.appendChild(editIcon);
+
+      var scoreGroup = document.createElement("div");
+      scoreGroup.className = "score-group";
+      var minus = document.createElement("button");
+      minus.type = "button";
+      minus.className = "score-btn";
+      minus.textContent = "−";
+      minus.setAttribute("aria-label", "Trừ điểm");
+      var num = document.createElement("span");
+      num.className = "score-num";
+      num.textContent = "0";
+      var plus = document.createElement("button");
+      plus.type = "button";
+      plus.className = "score-btn";
+      plus.textContent = "+";
+      plus.setAttribute("aria-label", "Cộng điểm");
+      scoreGroup.appendChild(minus);
+      scoreGroup.appendChild(num);
+      scoreGroup.appendChild(plus);
+
+      row.appendChild(nameWrap);
+      row.appendChild(scoreGroup);
+
+      input.addEventListener("change", function(){
+        sendMsg({type:"updateTeam", matchId:id, side:side, value: input.value.trim()});
+      });
+      minus.addEventListener("click", function(){ sendMsg({type:"adjustScore", matchId:id, side:side, delta:-1}); });
+      plus.addEventListener("click", function(){ sendMsg({type:"adjustScore", matchId:id, side:side, delta:1}); });
+
+      return {row: row, input: input, check: check, num: num, minus: minus, plus: plus};
+    }
+
+    var teamA = buildTeamRow("A");
+    var teamB = buildTeamRow("B");
+    card.appendChild(teamA.row);
+    card.appendChild(teamB.row);
+
+    var foot = document.createElement("div");
+    foot.className = "card-foot";
+    var resetBtn = document.createElement("button");
+    resetBtn.type = "button";
+    resetBtn.className = "reset-btn";
+    resetBtn.textContent = "Đấu lại";
+    resetBtn.hidden = true;
+    resetBtn.addEventListener("click", function(){ sendMsg({type:"reset", matchId:id}); });
+    foot.appendChild(resetBtn);
+    card.appendChild(foot);
+
+    return { root: card, chip: chip, pill: pill, teamA: teamA, teamB: teamB, resetBtn: resetBtn };
+  }
+
+  function ensureCard(id){
+    if (cardEls[id]) return cardEls[id];
+    var el = buildCard(id);
+    cardEls[id] = el;
+    var grid = document.getElementById(GRID_FOR_ROUND[ROUND_OF[id]]);
+    if (grid) grid.appendChild(el.root);
+    return el;
+  }
+
+  function renderCard(id, m){
+    var el = ensureCard(id);
+    el.root.classList.remove("skeleton");
+    el.chip.textContent = (m.court || "") + (m.time ? " · " + m.time : "");
+
+    var status = m.status || "pending";
+    el.pill.className = "pill pill-" + status;
+    el.pill.textContent = status === "done" ? "Kết thúc" : (status === "live" ? "Đang đấu" : "Chưa đấu");
+
+    var locked = status === "done" || !editable;
+    var hasBothTeams = !!(m.teamA && m.teamB);
+
+    [["A", el.teamA, m.teamA, m.scoreA, m.winner === "A"],
+     ["B", el.teamB, m.teamB, m.scoreB, m.winner === "B"]].forEach(function(entry){
+      var side = entry[0], t = entry[1], name = entry[2] || "", score = entry[3] || 0, won = entry[4];
+      if (document.activeElement !== t.input) t.input.value = name;
+      t.input.disabled = !editable || status === "done";
+      t.num.textContent = String(score);
+      t.check.hidden = !won;
+      t.row.classList.toggle("winner", !!won);
+      t.minus.disabled = locked || !hasBothTeams || score <= 0;
+      t.plus.disabled = locked || !hasBothTeams;
+    });
+
+    el.resetBtn.hidden = !(editable && status !== "pending");
+  }
+
+  function render(){
+    MATCH_ORDER.forEach(function(id){
+      if (cache[id]) renderCard(id, cache[id]);
+    });
+  }
+
+  function sendMsg(msg){
+    if (!editable) return;
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+      showBanner("Mất kết nối tới máy chủ — đang thử kết nối lại...", true);
+      return;
+    }
+    ws.send(JSON.stringify(msg));
+  }
+
+  function connect(){
+    var proto = location.protocol === "https:" ? "wss:" : "ws:";
+    ws = new WebSocket(proto + "//" + location.host + "/ws");
+
+    ws.addEventListener("open", function(){
+      reconnectDelay = 1000;
+      if (editable) showBanner("", false); else showBanner("Chế độ chỉ xem — bảng điểm cập nhật trực tiếp.", false);
+    });
+
+    ws.addEventListener("message", function(evt){
+      try {
+        var msg = JSON.parse(evt.data);
+        if (msg.type === "state") {
+          msg.matches.forEach(function(m){ cache[m.id] = m; });
+          render();
+        } else if (msg.type === "error") {
+          showBanner(msg.message, true);
+        }
+      } catch (e) { /* ignore malformed frame */ }
+    });
+
+    ws.addEventListener("close", function(){
+      showBanner("Mất kết nối tới máy chủ — đang thử kết nối lại...", true);
+      setTimeout(connect, reconnectDelay);
+      reconnectDelay = Math.min(reconnectDelay * 1.6, 15000);
+    });
+
+    ws.addEventListener("error", function(){
+      try { ws.close(); } catch(e){}
+    });
+  }
+
+  connect();
+})();
+</script>
+</body>
+</html>

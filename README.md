@@ -40,16 +40,29 @@ Domain đó phải đã trỏ DNS qua Cloudflare.
 
 - Mở URL worker để vào bảng điều khiển: bấm trực tiếp vào tên đội để sửa (có icon
   bút chì), dùng nút +/− để cộng trừ điểm.
-- Luật tự động: thắng khi đạt 21 điểm và cách biệt tối thiểu 2, trần 30 điểm (hoà
-  29–29 thì điểm thứ 30 thắng tuyệt đối). Đội thắng tự động được điền vào đúng vị trí
-  ở vòng kế tiếp.
+- Luật tự động: mỗi trận tối đa 3 set, thắng 2 set là thắng trận. Mỗi set tới 15
+  điểm và cách biệt tối thiểu 2; chạm 21 điểm (điểm trần) là thắng set. Đổi luật bằng
+  3 hằng số `SET_POINTS`, `SET_CAP`, `SETS_TO_WIN` ở đầu `src/worker.js` và ở đầu
+  script trong `public/index.html` (phải sửa cả hai nơi cho khớp). Đội thắng tự động
+  được điền vào đúng vị trí ở vòng kế tiếp.
+- Mỗi thẻ trận hiển thị số set đã thắng, tỷ số từng set và set đang đấu. Nút +/−
+  cộng/trừ điểm trong set hiện tại.
 - Thêm `?view=1` vào cuối URL (ví dụ `.../?view=1`) để có bản **chỉ xem**, không có
   nút bấm — dùng cho màn hình chiếu công khai ở khu vực thi đấu.
 - Nhiều người có thể mở cùng lúc trên nhiều thiết bị (mỗi sân một điện thoại); điểm
   cập nhật real-time cho tất cả qua WebSocket, xử lý tuần tự trong Durable Object nên
   không bị ghi đè lẫn nhau khi hai sân bấm cùng lúc.
-- Nút "Đấu lại" ở mỗi trận để reset điểm nếu bấm nhầm (không tự động gỡ kết quả đã
-  truyền sang vòng sau — cần sửa tay ô tên đội ở vòng đó nếu cần đính chính).
+- "↶ Hoàn tác" gỡ điểm vừa ghi gần nhất (kể cả điểm quyết định trận — kết quả đã
+  chuyển sang vòng sau sẽ được gỡ theo). "Đấu lại" xoá toàn bộ điểm của trận (bấm 2
+  lần để xác nhận). Nếu trận kế tiếp đã bắt đầu thì không cho sửa trận trước nó.
+- Khung giờ dự kiến (13:30–15:30, mỗi lượt 30 phút, 2 sân song song): Tứ kết
+  13:30–14:30, Bán kết 14:30–15:00, Chung kết 15:00–15:30. Chỉ là nhãn hiển thị, sửa
+  trong `SEED_MATCHES` rồi deploy (tự đồng bộ vào dữ liệu đang chạy).
+
+## Nâng cấp từ bản luật cũ (1 set 21 điểm)
+
+Lần deploy đầu với bản này, dữ liệu điểm cũ bị xoá về 0 (tên đội đã nhập được giữ
+nguyên, các ô tên ở bán kết/chung kết do kết quả cũ tự điền sẽ bị xoá).
 
 ## Chi phí
 

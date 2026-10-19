@@ -8,24 +8,25 @@
 <style>
 :root{
   --bg:#F6F6F0; --surface:#FFFFFF; --surface-2:#EFEFE6; --fg:#1B2420; --muted:#6B7A70;
-  --line:#DEE1D6; --accent:#216B45; --live:#B9770E; --live-bg:#FBF0DC; --done-bg:#E4F1E8;
-  --danger:#A3432B; --focus:#216B45;
+  --line:#DEE1D6; --accent:#216B45; --accent-ink:#FFFFFF; --live:#B9770E; --live-bg:#FBF0DC;
+  --done-bg:#E4F1E8; --danger:#A3432B; --focus:#216B45;
   --font-display:'Teko','Arial Narrow',sans-serif; --font-body:'Work Sans',system-ui,sans-serif;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#12160F; --surface:#1A201A; --surface-2:#212820; --fg:#ECEEE6; --muted:#9FAEA2;
-    --line:#2B332A; --accent:#4FBB85; --live:#E3A93B; --live-bg:#2E2611; --done-bg:#163525;
-    --danger:#E08064; --focus:#4FBB85; color-scheme: dark;
+    --line:#2B332A; --accent:#4FBB85; --accent-ink:#0D140F; --live:#E3A93B; --live-bg:#2E2611;
+    --done-bg:#163525; --danger:#E08064; --focus:#4FBB85; color-scheme: dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#12160F; --surface:#1A201A; --surface-2:#212820; --fg:#ECEEE6; --muted:#9FAEA2;
-  --line:#2B332A; --accent:#4FBB85; --live:#E3A93B; --live-bg:#2E2611; --done-bg:#163525;
-  --danger:#E08064; --focus:#4FBB85; color-scheme: dark;
+  --line:#2B332A; --accent:#4FBB85; --accent-ink:#0D140F; --live:#E3A93B; --live-bg:#2E2611;
+  --done-bg:#163525; --danger:#E08064; --focus:#4FBB85; color-scheme: dark;
 }
 *{box-sizing:border-box;}
+[hidden]{display:none!important;}
 html,body{margin:0;}
 body{background:var(--bg); color:var(--fg); font-family:var(--font-body); padding-inline:16px;}
 .page{max-width:960px; margin:0 auto; padding-block:28px 60px;}
@@ -33,7 +34,7 @@ body{background:var(--bg); color:var(--fg); font-family:var(--font-body); paddin
 .eyebrow{font-size:12px; font-weight:600; letter-spacing:.11em; color:var(--accent); text-transform:uppercase;}
 h1{font-family:var(--font-display); font-weight:600; font-size:clamp(34px,7vw,52px); line-height:1; margin:2px 0; text-wrap:balance;}
 .sub{margin:0; color:var(--muted); font-size:14.5px;}
-.rule{margin-top:10px; font-size:13px; color:var(--muted); border-left:3px solid var(--line); padding-left:10px; max-width:52ch;}
+.rule{margin-top:10px; font-size:13px; color:var(--muted); border-left:3px solid var(--line); padding-left:10px; max-width:60ch;}
 .banner{margin-top:14px; padding:10px 14px; border-radius:10px; font-size:13.5px; background:var(--live-bg); color:var(--live); border:1px solid var(--line);}
 main{display:flex; flex-direction:column; gap:34px;}
 .round-title{font-family:var(--font-display); font-weight:600; font-size:26px; margin:0 0 12px; display:flex; align-items:baseline; gap:10px;}
@@ -47,7 +48,7 @@ main{display:flex; flex-direction:column; gap:34px;}
 .pill-pending{background:var(--surface-2); color:var(--muted);}
 .pill-live{background:var(--live-bg); color:var(--live);}
 .pill-done{background:var(--done-bg); color:var(--accent);}
-.team{display:grid; grid-template-columns:1fr auto; align-items:center; gap:10px; padding:7px 0; border-top:1px solid var(--line);}
+.team{display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:10px; padding:7px 0; border-top:1px solid var(--line);}
 .team:first-of-type{border-top:none;}
 .team.winner .name-input{font-weight:700; color:var(--accent);}
 .name-wrap{display:flex; align-items:center; gap:7px; min-width:0;}
@@ -56,18 +57,29 @@ main{display:flex; flex-direction:column; gap:34px;}
 .name-input:hover:not([disabled]){background:var(--surface-2); border-bottom-color:var(--accent);}
 .name-input::placeholder{color:var(--muted); font-style:italic;}
 .name-input:focus-visible{outline:2px solid var(--focus); outline-offset:1px; border-bottom-color:transparent;}
-.name-input[disabled]{opacity:.7; border-bottom-color:transparent; cursor:default;}
+.name-input[disabled]{opacity:1; color:var(--fg); -webkit-text-fill-color:currentColor; border-bottom-color:transparent; cursor:default; text-overflow:ellipsis;}
+.name-input[disabled]::placeholder{font-style:normal; opacity:.6;}
+.foot-actions{margin-top:10px;}
 .edit-icon{font-size:11px; color:var(--muted); opacity:.5; flex:none;}
 .name-input[disabled] + .edit-icon{display:none;}
+.sets{display:flex; align-items:baseline; justify-content:center; gap:3px; min-width:42px; height:26px; padding:0 8px; border-radius:8px; background:var(--surface-2); color:var(--fg); font-variant-numeric:tabular-nums; align-self:center;}
+.sets .n{font-weight:700; font-size:14px;}
+.sets .u{font-size:9.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
+.team.winner .sets{background:var(--accent); color:var(--accent-ink);}
+.team.winner .sets .u{color:var(--accent-ink); opacity:.85;}
 .score-group{display:flex; align-items:center; gap:6px; flex:none;}
 .score-btn{width:26px; height:26px; border-radius:8px; border:1px solid var(--line); background:var(--surface-2); color:var(--fg); font-size:15px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer;}
 .score-btn:active{transform:translateY(1px);}
 .score-btn:disabled{opacity:.35; cursor:not-allowed;}
 .score-btn:focus-visible{outline:2px solid var(--focus); outline-offset:1px;}
 .score-num{font-family:var(--font-display); font-size:30px; font-weight:600; min-width:1.4ch; text-align:center; font-variant-numeric:tabular-nums;}
-.card-foot{display:flex; justify-content:flex-end;}
-.reset-btn{border:none; background:none; color:var(--danger); font-size:12px; font-weight:600; cursor:pointer; padding:4px 2px; letter-spacing:.02em;}
-.reset-btn:focus-visible{outline:2px solid var(--focus); outline-offset:1px;}
+.history{display:flex; flex-wrap:wrap; gap:6px; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums;}
+.hist{background:var(--surface-2); border-radius:999px; padding:2px 9px;}
+.hist.cur{background:var(--live-bg); color:var(--live); font-weight:600;}
+.card-foot{display:flex; justify-content:flex-end; gap:14px;}
+.text-btn{border:none; background:none; font-family:var(--font-body); font-size:12px; font-weight:600; cursor:pointer; padding:4px 2px; letter-spacing:.02em; color:var(--muted);}
+.text-btn.danger{color:var(--danger);}
+.text-btn:focus-visible{outline:2px solid var(--focus); outline-offset:1px;}
 .skeleton{opacity:.5;}
 .foot{margin-top:40px; font-size:12px; color:var(--muted); border-top:1px solid var(--line); padding-top:16px;}
 </style>
@@ -78,7 +90,7 @@ main{display:flex; flex-direction:column; gap:34px;}
     <div class="eyebrow">Giải đấu loại trực tiếp</div>
     <h1>Cầu Lông Cup 2026</h1>
     <p class="sub">8 đội · Đôi Nam Nữ · Hạt giống 1–2 tách nhánh, 6 đội còn lại bốc thăm</p>
-    <p class="rule">Luật tính điểm: ván đấu tới 21 điểm, thắng cách biệt tối thiểu 2 điểm, điểm trần 30 — hoà 29–29 thì điểm thứ 30 thắng tuyệt đối.</p>
+    <p class="rule">Luật thi đấu: mỗi trận đánh tối đa 3 set, thắng 2 set là thắng trận. Mỗi set tới 15 điểm, thắng cách biệt tối thiểu 2 điểm; chạm 21 điểm (điểm trần) là thắng set.</p>
     <div class="banner" id="banner" hidden></div>
   </header>
 
@@ -98,7 +110,8 @@ main{display:flex; flex-direction:column; gap:34px;}
   </main>
 
   <footer class="foot">
-    Thắng mỗi tứ kết/bán kết tự động chuyển vào vị trí tương ứng ở vòng sau. Thêm <code>?view=1</code> vào cuối đường dẫn để mở bản chỉ xem (màn hình chiếu công khai, không có nút bấm).
+    Đội thắng mỗi trận tự động được điền vào đúng vị trí ở vòng sau. Bấm "Hoàn tác" để gỡ điểm vừa ghi (kể cả điểm chốt set hoặc chốt trận); chỉ gỡ được khi trận kế tiếp chưa bắt đầu. Thêm <code>?view=1</code> vào cuối đường dẫn để mở bản chỉ xem (màn hình chiếu công khai, không có nút bấm).
+    <div class="foot-actions"><button type="button" id="toggle-names" class="text-btn" hidden>Sửa tên đội</button></div>
   </footer>
 </div>
 
@@ -106,23 +119,61 @@ main{display:flex; flex-direction:column; gap:34px;}
 (function(){
   "use strict";
 
+  // ===== Luật thi đấu — phải khớp với 3 hằng số cùng tên trong src/worker.js =====
+  var SET_POINTS = 15;   // chạm mốc này và hơn đối thủ >= 2 điểm thì thắng set
+  var SET_CAP = 21;      // điểm trần: ai chạm trước thì thắng set
+  var SETS_TO_WIN = 2;   // thắng 2 set là thắng trận (đấu tối đa 3 set)
+
   var MATCH_ORDER = ["qf1","qf2","qf3","qf4","sf1","sf2","final"];
   var ROUND_OF = {qf1:"qf",qf2:"qf",qf3:"qf",qf4:"qf",sf1:"sf",sf2:"sf",final:"final"};
   var GRID_FOR_ROUND = {qf:"grid-qf", sf:"grid-sf", final:"grid-final"};
 
-  var params = new URLSearchParams(location.search);
-  var editable = params.get("view") !== "1";
-
   var cache = {};
   var cardEls = {};
-  var ws = null;
-  var reconnectDelay = 1000;
+  var editable = true;
+  var namesEditing = false; // mặc định ẩn ô nhập tên đội; chỉ mở khi bấm "Sửa tên đội"
+
+  // Điểm của mỗi trận là chuỗi "A"/"B" theo thứ tự ghi điểm; mọi tỷ số đều tính lại từ chuỗi này.
+  function setWinner(a, b){
+    if (a >= SET_CAP) return "A";
+    if (b >= SET_CAP) return "B";
+    if (a >= SET_POINTS && a - b >= 2) return "A";
+    if (b >= SET_POINTS && b - a >= 2) return "B";
+    return null;
+  }
+
+  function replay(log){
+    var a = 0, b = 0, setsA = 0, setsB = 0, winner = null, setStart = 0, consumed = 0;
+    var history = [];
+    for (var i = 0; i < log.length && !winner; i++){
+      if (log.charAt(i) === "A") a++; else b++;
+      consumed = i + 1;
+      var w = setWinner(a, b);
+      if (w){
+        history.push([a, b]);
+        if (w === "A") setsA++; else setsB++;
+        a = 0; b = 0; setStart = i + 1;
+        if (setsA >= SETS_TO_WIN) winner = "A";
+        else if (setsB >= SETS_TO_WIN) winner = "B";
+      }
+    }
+    return {history: history, scoreA: a, scoreB: b, setsA: setsA, setsB: setsB, winner: winner, setStart: setStart, consumed: consumed};
+  }
+
+  function cleanLog(m){ return String((m && m.log) || "").replace(/[^AB]/g, ""); }
 
   function showBanner(text, isError){
     var b = document.getElementById("banner");
     b.textContent = text;
     b.hidden = !text;
     b.style.color = isError ? "var(--danger)" : "var(--live)";
+  }
+
+  var flashTimer = null;
+  function flashError(text){
+    showBanner(text, true);
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(function(){ showBanner("", false); }, 4500);
   }
 
   function buildCard(id){
@@ -143,6 +194,7 @@ main{display:flex; flex-direction:column; gap:34px;}
     function buildTeamRow(side){
       var row = document.createElement("div");
       row.className = "team";
+
       var nameWrap = document.createElement("div");
       nameWrap.className = "name-wrap";
       var check = document.createElement("span");
@@ -162,6 +214,18 @@ main{display:flex; flex-direction:column; gap:34px;}
       nameWrap.appendChild(check);
       nameWrap.appendChild(input);
       nameWrap.appendChild(editIcon);
+
+      var sets = document.createElement("span");
+      sets.className = "sets";
+      sets.title = "Số set đã thắng";
+      var setsN = document.createElement("span");
+      setsN.className = "n";
+      setsN.textContent = "0";
+      var setsU = document.createElement("span");
+      setsU.className = "u";
+      setsU.textContent = "set";
+      sets.appendChild(setsN);
+      sets.appendChild(setsU);
 
       var scoreGroup = document.createElement("div");
       scoreGroup.className = "score-group";
@@ -183,15 +247,14 @@ main{display:flex; flex-direction:column; gap:34px;}
       scoreGroup.appendChild(plus);
 
       row.appendChild(nameWrap);
+      row.appendChild(sets);
       row.appendChild(scoreGroup);
 
-      input.addEventListener("change", function(){
-        sendMsg({type:"updateTeam", matchId:id, side:side, value: input.value.trim()});
-      });
-      minus.addEventListener("click", function(){ sendMsg({type:"adjustScore", matchId:id, side:side, delta:-1}); });
-      plus.addEventListener("click", function(){ sendMsg({type:"adjustScore", matchId:id, side:side, delta:1}); });
+      input.addEventListener("change", function(){ Backend.rename(id, side, input.value.trim()); });
+      minus.addEventListener("click", function(){ Backend.minus(id, side); });
+      plus.addEventListener("click", function(){ Backend.point(id, side); });
 
-      return {row: row, input: input, check: check, num: num, minus: minus, plus: plus};
+      return {row: row, input: input, check: check, setsN: setsN, num: num, minus: minus, plus: plus};
     }
 
     var teamA = buildTeamRow("A");
@@ -199,18 +262,48 @@ main{display:flex; flex-direction:column; gap:34px;}
     card.appendChild(teamA.row);
     card.appendChild(teamB.row);
 
+    var history = document.createElement("div");
+    history.className = "history";
+    history.hidden = true;
+    card.appendChild(history);
+
     var foot = document.createElement("div");
     foot.className = "card-foot";
+    var undoBtn = document.createElement("button");
+    undoBtn.type = "button";
+    undoBtn.className = "text-btn";
+    undoBtn.textContent = "↶ Hoàn tác";
+    undoBtn.title = "Gỡ điểm vừa ghi gần nhất";
+    undoBtn.hidden = true;
+    undoBtn.addEventListener("click", function(){ Backend.undo(id); });
+
     var resetBtn = document.createElement("button");
     resetBtn.type = "button";
-    resetBtn.className = "reset-btn";
+    resetBtn.className = "text-btn danger";
     resetBtn.textContent = "Đấu lại";
     resetBtn.hidden = true;
-    resetBtn.addEventListener("click", function(){ sendMsg({type:"reset", matchId:id}); });
+    var armed = false, armTimer = null;
+    function disarm(){
+      armed = false;
+      clearTimeout(armTimer);
+      resetBtn.textContent = "Đấu lại";
+    }
+    resetBtn.addEventListener("click", function(){
+      if (!armed){
+        armed = true;
+        resetBtn.textContent = "Xoá hết điểm? Bấm lại để xác nhận";
+        armTimer = setTimeout(disarm, 3500);
+        return;
+      }
+      disarm();
+      Backend.reset(id);
+    });
+    foot.appendChild(undoBtn);
     foot.appendChild(resetBtn);
     card.appendChild(foot);
 
-    return { root: card, chip: chip, pill: pill, teamA: teamA, teamB: teamB, resetBtn: resetBtn };
+    return {root: card, chip: chip, pill: pill, teamA: teamA, teamB: teamB,
+            history: history, undoBtn: undoBtn, resetBtn: resetBtn};
   }
 
   function ensureCard(id){
@@ -227,42 +320,100 @@ main{display:flex; flex-direction:column; gap:34px;}
     el.root.classList.remove("skeleton");
     el.chip.textContent = (m.court || "") + (m.time ? " · " + m.time : "");
 
-    var status = m.status || "pending";
+    var log = cleanLog(m);
+    var d = replay(log);
+    var started = log.length > 0;
+    var status = d.winner ? "done" : (started ? "live" : "pending");
     el.pill.className = "pill pill-" + status;
-    el.pill.textContent = status === "done" ? "Kết thúc" : (status === "live" ? "Đang đấu" : "Chưa đấu");
+    el.pill.textContent = status === "done" ? "Kết thúc"
+      : status === "live" ? "Đang đấu · Set " + (d.history.length + 1)
+      : "Chưa đấu";
 
     var locked = status === "done" || !editable;
     var hasBothTeams = !!(m.teamA && m.teamB);
+    // Trận đã xong thì hiển thị tỷ số set cuối; đang đấu thì hiển thị tỷ số set hiện tại.
+    var shown = d.winner ? (d.history[d.history.length - 1] || [0, 0]) : [d.scoreA, d.scoreB];
 
-    [["A", el.teamA, m.teamA, m.scoreA, m.winner === "A"],
-     ["B", el.teamB, m.teamB, m.scoreB, m.winner === "B"]].forEach(function(entry){
-      var side = entry[0], t = entry[1], name = entry[2] || "", score = entry[3] || 0, won = entry[4];
+    [["A", el.teamA, m.teamA, shown[0], d.setsA, d.scoreA, d.winner === "A"],
+     ["B", el.teamB, m.teamB, shown[1], d.setsB, d.scoreB, d.winner === "B"]].forEach(function(entry){
+      var t = entry[1], name = entry[2] || "", score = entry[3], setsWon = entry[4], current = entry[5], won = entry[6];
       if (document.activeElement !== t.input) t.input.value = name;
-      t.input.disabled = !editable || status === "done";
+      t.input.disabled = !editable || !namesEditing || status === "done";
+      t.input.placeholder = namesEditing ? "Nhập tên đội" : "Chờ xác định";
       t.num.textContent = String(score);
+      t.setsN.textContent = String(setsWon);
       t.check.hidden = !won;
       t.row.classList.toggle("winner", !!won);
-      t.minus.disabled = locked || !hasBothTeams || score <= 0;
+      t.minus.disabled = locked || !hasBothTeams || current <= 0;
       t.plus.disabled = locked || !hasBothTeams;
     });
 
-    el.resetBtn.hidden = !(editable && status !== "pending");
+    var parts = d.history.map(function(s, i){
+      return {text: "Set " + (i + 1) + ": " + s[0] + "–" + s[1], cur: false};
+    });
+    if (status === "live") parts.push({text: "Set " + (d.history.length + 1) + ": " + d.scoreA + "–" + d.scoreB, cur: true});
+    el.history.textContent = "";
+    parts.forEach(function(p){
+      var span = document.createElement("span");
+      span.className = "hist" + (p.cur ? " cur" : "");
+      span.textContent = p.text;
+      el.history.appendChild(span);
+    });
+    el.history.hidden = parts.length === 0;
+
+    el.undoBtn.hidden = !(editable && started);
+    el.resetBtn.hidden = !(editable && started);
   }
 
   function render(){
+    var tg = document.getElementById("toggle-names");
+    if (tg){
+      tg.hidden = !editable;
+      tg.textContent = namesEditing ? "Xong — ẩn ô sửa tên đội" : "Sửa tên đội";
+    }
+    var root = document.querySelector(".wrap") || document.body;
+    root.classList.toggle("names-editing", editable && namesEditing);
     MATCH_ORDER.forEach(function(id){
       if (cache[id]) renderCard(id, cache[id]);
     });
   }
 
-  function sendMsg(msg){
+  function onState(list){
+    list.forEach(function(m){ cache[m.id] = m; });
+    render();
+  }
+
+  function setEditable(v){
+    editable = !!v;
+    render();
+  }
+
+  var tgBtn = document.getElementById("toggle-names");
+  if (tgBtn) tgBtn.addEventListener("click", function(){ namesEditing = !namesEditing; render(); });
+
+    // ===== Kết nối WebSocket tới Durable Object (mọi logic ghi điểm nằm ở src/worker.js) =====
+  var params = new URLSearchParams(location.search);
+  setEditable(params.get("view") !== "1");
+
+  var ws = null;
+  var reconnectDelay = 1000;
+
+  function send(msg){
     if (!editable) return;
-    if (!ws || ws.readyState !== WebSocket.OPEN) {
+    if (!ws || ws.readyState !== WebSocket.OPEN){
       showBanner("Mất kết nối tới máy chủ — đang thử kết nối lại...", true);
       return;
     }
     ws.send(JSON.stringify(msg));
   }
+
+  var Backend = {
+    point:  function(id, side){ send({type: "point", matchId: id, side: side}); },
+    minus:  function(id, side){ send({type: "minus", matchId: id, side: side}); },
+    undo:   function(id){ send({type: "undo", matchId: id}); },
+    reset:  function(id){ send({type: "reset", matchId: id}); },
+    rename: function(id, side, value){ send({type: "updateTeam", matchId: id, side: side, value: value}); }
+  };
 
   function connect(){
     var proto = location.protocol === "https:" ? "wss:" : "ws:";
@@ -270,19 +421,15 @@ main{display:flex; flex-direction:column; gap:34px;}
 
     ws.addEventListener("open", function(){
       reconnectDelay = 1000;
-      if (editable) showBanner("", false); else showBanner("Chế độ chỉ xem — bảng điểm cập nhật trực tiếp.", false);
+      showBanner(editable ? "" : "Chế độ chỉ xem — bảng điểm cập nhật trực tiếp.", false);
     });
 
     ws.addEventListener("message", function(evt){
       try {
         var msg = JSON.parse(evt.data);
-        if (msg.type === "state") {
-          msg.matches.forEach(function(m){ cache[m.id] = m; });
-          render();
-        } else if (msg.type === "error") {
-          showBanner(msg.message, true);
-        }
-      } catch (e) { /* ignore malformed frame */ }
+        if (msg.type === "state") onState(msg.matches);
+        else if (msg.type === "error") flashError(msg.message);
+      } catch (e) { /* bỏ qua gói tin lỗi */ }
     });
 
     ws.addEventListener("close", function(){
@@ -292,11 +439,12 @@ main{display:flex; flex-direction:column; gap:34px;}
     });
 
     ws.addEventListener("error", function(){
-      try { ws.close(); } catch(e){}
+      try { ws.close(); } catch (e) {}
     });
   }
 
   connect();
+
 })();
 </script>
 </body>
